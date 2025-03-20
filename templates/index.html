@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>股票交易資料查詢</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .chart {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">股票交易資料查詢</h1>
+        
+        <!-- 表單 -->
+        <form method="POST" action="/">
+            <div class="mb-3">
+                <label for="stock_code" class="form-label">股票代碼</label>
+                <input type="text" class="form-control" id="stock_code" name="stock_code" placeholder="例如：2330" required>
+            </div>
+            <div class="mb-3">
+                <label for="start_date" class="form-label">開始日期</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" required>
+            </div>
+            <div class="mb-3">
+                <label for="end_date" class="form-label">結束日期</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+            <button type="submit" class="btn btn-primary">查詢</button>
+        </form>
+
+        <!-- 錯誤訊息 -->
+        {% if error %}
+        <div class="alert alert-danger mt-3" role="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <!-- 查詢結果 -->
+        {% if table %}
+        <h3 class="mt-5">股票代碼 {{ stock_code }} 的交易資料（{{ start_date }} 至 {{ end_date }}）</h3>
+        {{ table | safe }}
+
+        <!-- 顯示 K 線圖 -->
+        {% if chart_path %}
+        <div class="chart">
+            <h4>K 線圖</h4>
+            <img src="{{ chart_path }}" alt="K 線圖" class="img-fluid">
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>
